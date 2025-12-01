@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Giant's Causeway",
+    "region": "Northern Ireland",
+    "lat": 55.2408,
+    "lng": -6.5116
+  },
+  {
+    "id": 2,
+    "name": "Stourhead",
+    "region": "Wiltshire",
+    "lat": 51.1044,
+    "lng": -2.3179
+  },
+  {
+    "id": 3,
+    "name": "Fountains Abbey",
+    "region": "North Yorkshire",
+    "lat": 54.1098,
+    "lng": -1.5794
+  },
+  {
+    "id": 4,
+    "name": "Dunster Castle",
+    "region": "Somerset",
+    "lat": 51.1859,
+    "lng": -3.4402
+  },
+  {
+    "id": 5,
+    "name": "Bodiam Castle",
+    "region": "East Sussex",
+    "lat": 51.0023,
+    "lng": 0.5434
+  }
+]

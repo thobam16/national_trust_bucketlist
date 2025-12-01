@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Trust Bucket List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        body { margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Layout: Top Navbar, then Flex Container for Sidebar + Map */
+        #app-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden; /* Prevent body scroll */
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: 350px;
+            background: #f8f9fa;
+            border-right: 1px solid #ddd;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Map Styling */
+        #map {
+            flex: 1;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Responsive: Move sidebar to bottom on mobile */
+        @media (max-width: 768px) {
+            #app-container { flex-direction: column-reverse; }
+            #sidebar { width: 100%; height: 40%; }
+            #map { height: 60%; }
+        }
+
+        /* Custom Scrollbar for sidebar */
+        #sidebar::-webkit-scrollbar { width: 8px; }
+        #sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+
+        .property-item {
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+        .property-item:hover { background: #e9ecef; }
+        .visited-item { background-color: #d1e7dd; } /* Light green background for visited in list */
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-success">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">National Trust Tracker</span>
+            <span class="navbar-text text-white" id="progress-text">0 Visited</span>
+        </div>
+    </nav>
+
+    <div id="app-container">
+        <div id="sidebar">
+            <h5>Properties</h5>
+            <div id="property-list">
+                <div class="text-center mt-5"><div class="spinner-border text-success" role="status"></div><p>Loading...</p></div>
+            </div>
+        </div>
+
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script type="module">
+        // Import necessary Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+        // =======================================================
+        // 1. FIREBASE CONFIGURATION (REPLACE THIS SECTION!)
+        // =======================================================
+        const firebaseConfig = {
+          apiKey: "AIzaSyBArIEUkwy-ZUDUWEewBav5my0R_elvS-Q",
+          authDomain: "national-trust-bucketlist.firebaseapp.com",
+          projectId: "national-trust-bucketlist",
+          storageBucket: "national-trust-bucketlist.firebasestorage.app",
+          messagingSenderId: "370638516834",
+          appId: "1:370638516834:web:b643dd2122faeb6674d73b",
+          measurementId: "G-J8FG8KSH6H"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // =======================================================
+        // 2. MAP SETUP
+        // =======================================================
+        const map = L.map('map').setView([54.5, -4], 6); // Center on UK
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // Define Icons
+        const blueIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+        });
+
+        const greenIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+        });
+
+        let markers = {}; // Store marker objects by ID
+        let propertiesData = [];
+        let currentUser = null;
+
+        // =======================================================
+        // 3. LOGIC & DATA HANDLING
+        // =======================================================
+
+        // Fetch Data First
+        fetch('properties.json')
+            .then(response => response.json())
+            .then(data => {
+                propertiesData = data;
+                initApp();
+            })
+            .catch(err => console.error("Error loading properties.json:", err));
+
+        function initApp() {
+            // Handle Auth
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    console.log("User logged in:", user.uid);
+                    setupRealtimeListener(user.uid);
+                } else {
+                    signInAnonymously(auth).catch((error) => console.error("Auth Error:", error));
+                }
+            });
+
+            renderSidebar(propertiesData);
+            renderMapMarkers(propertiesData);
+        }
+
+        // Listen to Firestore for changes to "visited" status
+        function setupRealtimeListener(uid) {
+            const userDocRef = doc(db, "users", uid);
+            
+            // This listener fires whenever the database changes (or on first load)
+            onSnapshot(userDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const visitedData = docSnap.data().visited || {};
+                    updateUI(visitedData);
+                } else {
+                    // Create doc if it doesn't exist
+                    setDoc(userDocRef, { visited: {} }, { merge: true });
+                }
+            });
+        }
+
+        // Update the Map and Sidebar based on what is visited
+        function updateUI(visitedMap) {
+            let visitedCount = 0;
+
+            propertiesData.forEach(prop => {
+                const isVisited = !!visitedMap[prop.id];
+                if (isVisited) visitedCount++;
+
+                // 1. Update Marker Icon
+                if (markers[prop.id]) {
+                    markers[prop.id].setIcon(isVisited ? greenIcon : blueIcon);
+                }
+
+                // 2. Update Sidebar Checkbox
+                const checkbox = document.getElementById(`cb-${prop.id}`);
+                if (checkbox) checkbox.checked = isVisited;
+
+                // 3. Update Popup Checkbox (if open)
+                const popupCb = document.getElementById(`popup-cb-${prop.id}`);
+                if (popupCb) popupCb.checked = isVisited;
+
+                // 4. Update Sidebar Styles
+                const row = document.getElementById(`row-${prop.id}`);
+                if (row) {
+                    if(isVisited) row.classList.add('visited-item');
+                    else row.classList.remove('visited-item');
+                }
+            });
+
+            // Update Progress Text
+            document.getElementById('progress-text').innerText = `${visitedCount} / ${propertiesData.length} Visited`;
+        }
+
+        // Render Sidebar
+        function renderSidebar(data) {
+            const listContainer = document.getElementById('property-list');
+            listContainer.innerHTML = ''; // Clear spinner
+
+            data.forEach(prop => {
+                const div = document.createElement('div');
+                div.className = 'property-item d-flex align-items-center justify-content-between';
+                div.id = `row-${prop.id}`;
+                div.innerHTML = `
+                    <label class="d-flex align-items-center flex-grow-1" style="cursor:pointer">
+                        <input type="checkbox" class="form-check-input me-2" id="cb-${prop.id}">
+                        <span>${prop.name} <small class="text-muted d-block" style="font-size:0.8em">${prop.region}</small></span>
+                    </label>
+                    <button class="btn btn-sm btn-outline-primary ms-2" onclick="flyToLocation(${prop.lat}, ${prop.lng})">Show</button>
+                `;
+                
+                // Add click listener to the checkbox
+                div.querySelector('input').addEventListener('change', (e) => {
+                    toggleVisit(prop.id, e.target.checked);
+                });
+
+                listContainer.appendChild(div);
+            });
+        }
+
+        // Render Markers
+        function renderMapMarkers(data) {
+            data.forEach(prop => {
+                const marker = L.marker([prop.lat, prop.lng], { icon: blueIcon }).addTo(map);
+                
+                // Create Popup Content
+                const popupContent = `
+                    <strong>${prop.name}</strong><br>
+                    ${prop.region}<br><br>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="popup-cb-${prop.id}" onchange="window.toggleVisitFromPopup(${prop.id}, this.checked)">
+                        <label class="form-check-label" for="popup-cb-${prop.id}">Visited?</label>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent);
+                markers[prop.id] = marker; // Save reference
+            });
+        }
+
+        // Helper: Fly to location from sidebar
+        window.flyToLocation = (lat, lng) => {
+            map.flyTo([lat, lng], 12);
+        };
+
+        // Helper: Toggle visit from Popup (needs to be global scope)
+        window.toggleVisitFromPopup = (id, isChecked) => {
+            toggleVisit(id, isChecked);
+        };
+
+        // Core Function: Save to Firebase
+        async function toggleVisit(id, isChecked) {
+            if (!currentUser) return;
+            
+            const userDocRef = doc(db, "users", currentUser.uid);
+            
+            // We use dot notation to update a specific key in the nested map
+            // e.g. { "visited.1": true }
+            const updateData = {};
+            updateData[`visited.${id}`] = isChecked;
+
+            try {
+                await setDoc(userDocRef, updateData, { merge: true });
+            } catch (error) {
+                console.error("Error updating document: ", error);
+                alert("Could not save. Check your internet or Firebase rules.");
+            }
+        }
+    </script>
+</body>
+</html>
