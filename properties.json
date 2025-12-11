@@ -451,8 +451,8 @@
     "id": 67,
     "name": "Trelissick Garden",
     "region": "Cornwall",
-    "lat": null,
-    "lng": null
+    "lat": 50.21723651946535, 
+    "lng": -5.033732751234367
   },
   {
     "id": 68,
@@ -561,10 +561,10 @@
   },
   {
     "id": 83,
-    "name": "Gondola",
+    "name": "Steam Yacht Gondola",
     "region": "Cumbria",
-    "lat": null,
-    "lng": null
+    "lat": 54.36341152403098, 
+    "lng": -3.0660807711285196
   },
   {
     "id": 84,
@@ -619,8 +619,8 @@
     "id": 91,
     "name": "Tarn Hows",
     "region": "Cumbria",
-    "lat": null,
-    "lng": null
+    "lat": 54.388775101509175, 
+    "lng": -3.0370970742059247
   },
   {
     "id": 92,
@@ -766,8 +766,8 @@
     "id": 112,
     "name": "Baggy Point",
     "region": "Devon",
-    "lat": null,
-    "lng": null
+    "lat": 51.134977319365206,
+    "lng": -4.242281220801961
   },
   {
     "id": 113,
@@ -841,10 +841,10 @@
   },
   {
     "id": 123,
-    "name": "Heddon Valley Shop",
+    "name": "Heddon Valley",
     "region": "Devon",
-    "lat": null,
-    "lng": null
+    "lat": 51.21616475959989, 
+    "lng": -3.926594932124617
   },
   {
     "id": 124,
@@ -899,8 +899,8 @@
     "id": 131,
     "name": "Parke",
     "region": "Devon",
-    "lat": null,
-    "lng": null
+    "lat": 50.594645903539856, 
+    "lng": -3.6883850154611606
   },
   {
     "id": 132,
@@ -990,8 +990,8 @@
     "id": 144,
     "name": "Hardy Monument",
     "region": "Dorset",
-    "lat": null,
-    "lng": null
+    "lat": 50.686893200541384, 
+    "lng": -2.5491398374470977
   },
   {
     "id": 145,
@@ -1011,8 +1011,8 @@
     "id": 147,
     "name": "Kingston Lacy",
     "region": "Dorset",
-    "lat": null,
-    "lng": null
+    "lat": 50.81732460182597, 
+    "lng": -2.031054927616847
   },
   {
     "id": 148,
@@ -1109,8 +1109,8 @@
     "id": 161,
     "name": "Northey Island",
     "region": "Essex",
-    "lat": null,
-    "lng": null
+    "lat": 51.72426570249337,
+    "lng": 0.7177536125275908
   },
   {
     "id": 162,
@@ -1235,8 +1235,8 @@
     "id": 179,
     "name": "Woodchester Park",
     "region": "Gloucestershire",
-    "lat": null,
-    "lng": null
+    "lat": 51.70585513789652, 
+    "lng": -2.2706176288499966
   },
   {
     "id": 180,
@@ -1263,8 +1263,8 @@
     "id": 183,
     "name": "Ludshott Common and Waggoners Wells",
     "region": "Hampshire",
-    "lat": 51.10333333333333,
-    "lng": null
+    "lat": 51.103386000701754, 
+    "lng": -0.769553730059955
   },
   {
     "id": 184,
@@ -1333,8 +1333,8 @@
     "id": 193,
     "name": "Brockhampton Estate",
     "region": "Herefordshire",
-    "lat": null,
-    "lng": null
+    "lat": 52.201082119112854, 
+    "lng": -2.4587752503648432
   },
   {
     "id": 194,
@@ -1494,8 +1494,8 @@
     "id": 216,
     "name": "Oldbury Camp",
     "region": "Kent",
-    "lat": null,
-    "lng": null
+    "lat": 51.27900773849223,
+    "lng": 0.262141704701898
   },
   {
     "id": 217,
@@ -1543,8 +1543,8 @@
     "id": 223,
     "name": "South Foreland Lighthouse",
     "region": "Kent",
-    "lat": null,
-    "lng": null
+    "lat": 51.14062359656652, 
+    "lng": 1.3711607245506017
   },
   {
     "id": 224,
@@ -1641,8 +1641,8 @@
     "id": 237,
     "name": "Tattershall Castle",
     "region": "Lincolnshire",
-    "lat": null,
-    "lng": null
+    "lat": 53.101563076443156, 
+    "lng": -0.19345434656841481
   },
   {
     "id": 238,
@@ -1655,8 +1655,8 @@
     "id": 239,
     "name": "2 Willow Road",
     "region": "Greater London",
-    "lat": null,
-    "lng": null
+    "lat": 51.5572016358484,
+    "lng": -0.16916791603545892
   },
   {
     "id": 240,
@@ -1666,25 +1666,18 @@
     "lng": -0.14055555555555554
   },
   {
-    "id": 241,
-    "name": "Blewcoat School",
-    "region": "Greater London",
-    "lat": null,
-    "lng": null
-  },
-  {
     "id": 242,
     "name": "Carlyle's House",
     "region": "Greater London",
-    "lat": null,
-    "lng": -0.16999999999999998
+    "lat": 51.484174236656756, 
+    "lng": -0.16978074228388174
   },
   {
     "id": 243,
     "name": "Eastbury Manor House",
     "region": "Greater London",
-    "lat": null,
-    "lng": 0.09944444444444445
+    "lat": 51.534347951262795, 
+    "lng": 0.09944562721671417
   },
   {
     "id": 244,
@@ -1697,8 +1690,8 @@
     "id": 245,
     "name": "Fenton House",
     "region": "Greater London",
-    "lat": null,
-    "lng": null
+    "lat": 51.55904886763202, 
+    "lng": -0.17990985287401262
   },
   {
     "id": 246,
@@ -1732,8 +1725,8 @@
     "id": 250,
     "name": "Osterley Park",
     "region": "Greater London",
-    "lat": null,
-    "lng": null
+    "lat": 51.48960938712024, 
+    "lng": -0.35157689300489975
   },
   {
     "id": 251,
@@ -1746,8 +1739,8 @@
     "id": 252,
     "name": "Rainham Hall",
     "region": "Greater London",
-    "lat": null,
-    "lng": null
+    "lat": 51.51843403557584, 
+    "lng": 0.19056101712681067
   },
   {
     "id": 253,
@@ -1807,10 +1800,10 @@
   },
   {
     "id": 261,
-    "name": "59 Rodney Street",
+    "name": "The Hardmans' House",
     "region": "Merseyside",
-    "lat": null,
-    "lng": null
+    "lat": 53.39983366864712,
+    "lng": -2.9736658433383507
   },
   {
     "id": 262,
@@ -1851,8 +1844,8 @@
     "id": 267,
     "name": "Horsey Windpump",
     "region": "Norfolk",
-    "lat": 52.74111111111111,
-    "lng": null
+    "lat": 52.74119206999265, 
+    "lng": 1.6390669505033382
   },
   {
     "id": 268,
@@ -1935,8 +1928,8 @@
     "id": 279,
     "name": "Hadrian's Wall",
     "region": "Northumberland",
-    "lat": null,
-    "lng": null
+    "lat": 55.01339373630284, 
+    "lng": -2.3303053620568392
   },
   {
     "id": 280,
@@ -2054,8 +2047,8 @@
     "id": 296,
     "name": "Attingham Park",
     "region": "Shropshire",
-    "lat": null,
-    "lng": null
+    "lat": 52.688814967937354,
+    "lng": -2.669531771180217 
   },
   {
     "id": 297,
@@ -2138,8 +2131,8 @@
     "id": 308,
     "name": "Brean Down Fort",
     "region": "Somerset",
-    "lat": null,
-    "lng": null
+    "lat": 51.32811210612738, 
+    "lng": -3.034358034858548
   },
   {
     "id": 309,
@@ -2565,8 +2558,8 @@
     "id": 370,
     "name": "River Wey and Godalming Navigations",
     "region": "Surrey",
-    "lat": null,
-    "lng": null
+    "lat": 51.24268178437137, 
+    "lng": -0.5783222124071812
   },
   {
     "id": 371,
@@ -2600,8 +2593,8 @@
     "id": 375,
     "name": "Alfriston Clergy House",
     "region": "East Sussex",
-    "lat": null,
-    "lng": 0.15805555555555556
+    "lat": 50.806144659862234,
+    "lng": 0.15775281350578313
   },
   {
     "id": 376,
@@ -2614,8 +2607,8 @@
     "id": 377,
     "name": "Birling Gap",
     "region": "East Sussex",
-    "lat": null,
-    "lng": null
+    "lat": 50.74299824192731,
+    "lng": 0.20166413627533558
   },
   {
     "id": 378,
@@ -2642,8 +2635,8 @@
     "id": 381,
     "name": "Sheffield Park and Garden",
     "region": "East Sussex",
-    "lat": null,
-    "lng": null
+    "lat": 50.99894473877832, 
+    "lng": 0.01454072102001225
   },
   {
     "id": 382,
@@ -2670,8 +2663,8 @@
     "id": 385,
     "name": "Harting Down",
     "region": "West Sussex",
-    "lat": null,
-    "lng": null
+    "lat": 50.95690573101291, 
+    "lng": -0.8756329492637954
   },
   {
     "id": 386,
@@ -2754,8 +2747,8 @@
     "id": 398,
     "name": "Washington Old Hall",
     "region": "Tyne and Wear",
-    "lat": null,
-    "lng": null
+    "lat": 54.90286371285603, 
+    "lng": -1.5165018778042807
   },
   {
     "id": 399,
@@ -2789,8 +2782,8 @@
     "id": 403,
     "name": "Kinwarton Dovecote",
     "region": "Warwickshire",
-    "lat": null,
-    "lng": null
+    "lat": 52.22434835947949, 
+    "lng": -1.8463656053689401
   },
   {
     "id": 404,
@@ -2971,8 +2964,8 @@
     "id": 429,
     "name": "The Firs (Elgar Birthplace Museum)",
     "region": "Worcestershire",
-    "lat": null,
-    "lng": null
+    "lat": 52.19919839690226, 
+    "lng": -2.2826258725933593
   },
   {
     "id": 430,
