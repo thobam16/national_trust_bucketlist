@@ -149,10 +149,8 @@
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
         // =======================================================
-        // NO SECRETS IN CODE
-        // We rely on Firebase Security Rules to reject unauthorized emails.
+        // FIREBASE CONFIG
         // =======================================================
-
         const firebaseConfig = {
           apiKey: "AIzaSyBArIEUkwy-ZUDUWEewBav5my0R_elvS-Q",
           authDomain: "national-trust-bucketlist.firebaseapp.com",
@@ -169,7 +167,7 @@
         const provider = new GoogleAuthProvider();
 
         // =======================================================
-        // 1. STATE & ICONS
+        // STATE
         // =======================================================
         let allProperties = [];
         let visitedMap = {};
@@ -177,6 +175,7 @@
         let map = null;
         let currentUser = null;
 
+        // Icons
         const iconBase = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/';
         const icons = {
             visited: new L.Icon({ iconUrl: iconBase+'marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] }),
@@ -184,7 +183,7 @@
         };
 
         // =======================================================
-        // 2. INITIALIZATION
+        // INITIALIZATION
         // =======================================================
         fetch('properties.json')
             .then(res => res.json())
@@ -205,16 +204,16 @@
         }
 
         // =======================================================
-        // 3. AUTH LOGIC
+        // AUTHENTICATION
         // =======================================================
-
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Access Granted (initially) - The DB will check validity next
+                console.log("Logged in as:", user.email);
                 currentUser = user;
                 updateAuthUI(true, user);
                 setupRealtimeListener(user.uid);
             } else {
+                console.log("Logged out");
                 currentUser = null;
                 updateAuthUI(false);
                 clearData();
@@ -224,13 +223,12 @@
         window.doLogin = () => {
             document.getElementById('auth-error').innerText = "";
             signInWithPopup(auth, provider).catch(error => {
+                console.error("Login Error:", error);
                 document.getElementById('auth-error').innerText = error.message;
             });
         };
 
-        window.doLogout = () => {
-            signOut(auth);
-        };
+        window.doLogout = () => signOut(auth);
 
         function updateAuthUI(isLoggedIn, user = null) {
             const loginScreen = document.getElementById('login-screen');
@@ -241,7 +239,6 @@
                 loginScreen.style.display = 'none';
                 sidebarControls.style.display = 'block';
                 list.style.display = 'block';
-                
                 if(user.photoURL) {
                     const img = document.getElementById('user-photo');
                     img.src = user.photoURL;
@@ -258,44 +255,92 @@
 
         function clearData() {
             visitedMap = {};
-            markerClusterGroup.clearLayers();
+            if(markerClusterGroup) markerClusterGroup.clearLayers();
             document.getElementById('property-list').innerHTML = '';
         }
 
         // =======================================================
-        // 4. DATA SYNC (THE SECURITY CHECK IS HERE)
+        // REALTIME DATABASE LISTENER
         // =======================================================
-
         function setupRealtimeListener(uid) {
+            console.log("Connecting to database for user:", uid);
+            
             onSnapshot(doc(db, "users", uid), (docSnap) => {
-                visitedMap = docSnap.exists() ? (docSnap.data().visited || {}) : {};
-                
+                // If doc exists, grab visited map. If not, empty object.
+                if (docSnap.exists()) {
+                    visitedMap = docSnap.data().visited || {};
+                    console.log("Database updated. visited count:", Object.keys(visitedMap).length);
+                } else {
+                    console.log("No database record yet (New user).");
+                    visitedMap = {};
+                }
+
+                // Initialize filters if empty
                 if (document.getElementById('regionFilter').options.length <= 1) {
                     populateFilters();
                 }
+                
                 renderApp(); 
             }, (error) => {
-                // === SECURITY CHECKPOINT ===
-                // This fires if Firebase Security Rules reject the user.
-                console.error("Database Access Denied:", error);
-                
+                console.error("Database Permission Error:", error);
                 if (error.code === 'permission-denied') {
-                    document.getElementById('auth-error').innerText = "Access Denied: You are not authorized to view this data.";
-                    // Force logout
+                    document.getElementById('auth-error').innerText = "Access Denied: You are not authorized.";
                     signOut(auth);
                 }
             });
         }
 
         // =======================================================
-        // 5. RENDER LOGIC
+        // GLOBAL ACTION (Toggle Visit)
         // =======================================================
+        
+        // Defined on window so HTML onclicks can find it
+        window.toggleDatabaseVisit = async (id, isChecked) => {
+            if (!currentUser) {
+                alert("Please log in first.");
+                return;
+            }
 
+            console.log(`Toggling ID: ${id} to ${isChecked}`);
+
+            // 1. Optimistic UI Update (Make it feel instant)
+            visitedMap[id] = isChecked;
+            renderApp();
+
+            // 2. Prepare Database Update
+            // We use { visited: { [id]: value } } with merge:true. 
+            // This ensures we update DEEP inside the object, not overwrite the whole thing.
+            const userDocRef = doc(db, "users", currentUser.uid);
+            const updatePayload = {
+                visited: {
+                    [id]: isChecked
+                }
+            };
+
+            try {
+                await setDoc(userDocRef, updatePayload, { merge: true });
+                console.log("Save success!");
+            } catch (err) {
+                console.error("Save Failed:", err);
+                
+                // If it failed, revert the UI change
+                alert("Could not save to database. Check console for details.");
+                visitedMap[id] = !isChecked; // Undo
+                renderApp(); // Redraw
+            }
+        };
+
+        // =======================================================
+        // RENDER LOGIC
+        // =======================================================
         function populateFilters() {
             const regions = [...new Set(allProperties.map(p => p.region).filter(Boolean))].sort();
             const select = document.getElementById('regionFilter');
             regions.forEach(r => {
-                const opt = document.createElement('option'); opt.value = r; opt.innerText = r; select.appendChild(opt);
+                const opt = document.createElement('option'); 
+                opt.value = r; 
+                opt.innerText = r; 
+                select.appendChild(opt);
             });
             select.addEventListener('change', () => { renderApp(); zoomToFiltered(); });
             document.getElementById('showVisitedOnly').addEventListener('change', renderApp);
@@ -307,12 +352,15 @@
 
             const filteredData = allProperties.filter(p => {
                 const matchesRegion = regionVal === 'all' || p.region === regionVal;
-                const matchesVisited = !visitedOnly || visitedMap[p.id];
+                // Ensure we check truthiness clearly
+                const isVisited = !!visitedMap[p.id];
+                const matchesVisited = !visitedOnly || isVisited;
                 return matchesRegion && matchesVisited;
             });
 
-            const totalVisited = Object.values(visitedMap).filter(v => v).length;
-            const percentage = ((totalVisited / allProperties.length) * 100).toFixed(1);
+            // Update Stats
+            const totalVisited = Object.values(visitedMap).filter(v => v === true).length;
+            const percentage = allProperties.length ? ((totalVisited / allProperties.length) * 100).toFixed(1) : 0;
             document.getElementById('progress-text').innerHTML = `${totalVisited} visited <small class="ms-1">(${percentage}%)</small>`;
 
             renderSidebarList(filteredData);
@@ -331,20 +379,33 @@
             data.forEach(prop => {
                 const isVisited = !!visitedMap[prop.id];
                 const hasLoc = prop.lat && prop.lng;
+                
                 const div = document.createElement('div');
-                div.className = `property-card ${isVisited?'visited':''}`;
+                div.className = `property-card ${isVisited ? 'visited' : ''}`;
+                
                 div.innerHTML = `
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="cb-${prop.id}" ${isVisited?'checked':''}>
-                            <label class="form-check-label fw-bold text-dark" for="cb-${prop.id}" style="cursor:pointer">${prop.name}</label>
+                            <input class="form-check-input" type="checkbox" id="cb-${prop.id}" ${isVisited ? 'checked' : ''}>
+                            <label class="form-check-label fw-bold text-dark" for="cb-${prop.id}" style="cursor:pointer">
+                                ${prop.name}
+                            </label>
                             <span class="badge-visited">VISITED</span>
-                            <div class="text-muted small mt-1">${prop.region||''}</div>
+                            <div class="text-muted small mt-1">${prop.region || ''}</div>
                         </div>
-                        ${hasLoc ? `<button class="btn btn-sm btn-outline-success btn-fly" onclick="window.flyToAndOpen(${prop.id}, ${prop.lat}, ${prop.lng})"><i class="bi bi-geo-alt-fill"></i> Map</button>` : ''}
+                        ${hasLoc ? `
+                            <button class="btn btn-sm btn-outline-success btn-fly" onclick="window.flyToAndOpen(${prop.id}, ${prop.lat}, ${prop.lng})">
+                                <i class="bi bi-geo-alt-fill"></i> Map
+                            </button>` 
+                        : ''}
                     </div>
                 `;
-                div.querySelector('input').addEventListener('change', (e) => toggleDatabaseVisit(prop.id, e.target.checked));
+                
+                // IMPORTANT: Use window.toggleDatabaseVisit here
+                div.querySelector('input').addEventListener('change', (e) => {
+                    window.toggleDatabaseVisit(prop.id, e.target.checked);
+                });
+                
                 container.appendChild(div);
             });
         }
@@ -353,19 +414,27 @@
             markerClusterGroup.clearLayers();
             data.forEach(prop => {
                 if (!prop.lat || !prop.lng) return;
+                
                 const isVisited = !!visitedMap[prop.id];
-                const marker = L.marker([prop.lat, prop.lng], { icon: isVisited ? icons.visited : icons.unvisited });
+                const marker = L.marker([prop.lat, prop.lng], { 
+                    icon: isVisited ? icons.visited : icons.unvisited 
+                });
+                
                 marker.featureId = prop.id;
                 
                 const popupHTML = `
                     <div style="font-family:'Merriweather',serif; min-width:150px;">
                         <h6 style="color:var(--nt-green);font-weight:bold;">${prop.name}</h6>
-                        <p class="text-muted small">${prop.region}</p><hr>
+                        <p class="text-muted small">${prop.region}</p>
+                        <hr>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="popup-cb-${prop.id}" ${isVisited?'checked':''} onchange="window.toggleDatabaseVisit(${prop.id}, this.checked)">
+                            <input class="form-check-input" type="checkbox" id="popup-cb-${prop.id}" 
+                                ${isVisited ? 'checked' : ''} 
+                                onchange="window.toggleDatabaseVisit(${prop.id}, this.checked)">
                             <label class="form-check-label" for="popup-cb-${prop.id}">Visited</label>
                         </div>
                     </div>`;
+                    
                 marker.bindPopup(popupHTML);
                 markerClusterGroup.addLayer(marker);
             });
@@ -387,22 +456,6 @@
                     }
                 });
             }, 800);
-        };
-
-        window.toggleDatabaseVisit = async (id, isChecked) => {
-            if (!currentUser) return;
-            visitedMap[id] = isChecked; renderApp();
-            try {
-                await setDoc(doc(db, "users", currentUser.uid), { [`visited.${id}`]: isChecked }, { merge: true });
-            } catch (err) {
-                console.error(err); 
-                // If it was a permission error, the listener above will handle it.
-                // If it was network/other, we just alert.
-                if (err.code !== 'permission-denied') {
-                    alert("Save failed (Network error)."); 
-                }
-                visitedMap[id] = !isChecked; renderApp();
-            }
         };
     </script>
 </body>
