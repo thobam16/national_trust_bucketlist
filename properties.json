@@ -77,13 +77,6 @@
     "lng": -0.706111111111111
   },
   {
-    "id": 12,
-    "name": "Ashridge Estate",
-    "region": "Buckinghamshire",
-    "lat": 51.79972222222222,
-    "lng": -0.5594444444444445
-  },
-  {
     "id": 13,
     "name": "Boarstall Duck Decoy",
     "region": "Buckinghamshire",
@@ -703,8 +696,8 @@
     "id": 102,
     "name": "Ilam Park",
     "region": "Derbyshire",
-    "lat": 53.055,
-    "lng": -1.8069444444444445
+    "lat": 53.0540582097466,
+    "lng": -1.8032704868860734
   },
   {
     "id": 103,
@@ -2408,13 +2401,6 @@
     "lng": -2.1025
   },
   {
-    "id": 346,
-    "name": "South Peak Estate",
-    "region": "Staffordshire",
-    "lat": 53.055,
-    "lng": -1.8069444444444445
-  },
-  {
     "id": 347,
     "name": "Shugborough Hall",
     "region": "Staffordshire",
@@ -2742,13 +2728,6 @@
     "region": "West Sussex",
     "lat": 50.99722222222222,
     "lng": -0.7569444444444444
-  },
-  {
-    "id": 394,
-    "name": "Ormesby Hall",
-    "region": "Teesside",
-    "lat": 54.54333333333333,
-    "lng": -1.1830555555555555
   },
   {
     "id": 395,
@@ -3192,13 +3171,6 @@
     "lng": -2.0425
   },
   {
-    "id": 458,
-    "name": "Longshaw Estate",
-    "region": "West Yorkshire",
-    "lat": 53.316111111111105,
-    "lng": -1.605
-  },
-  {
     "id": 459,
     "name": "Marsden Moor Estate",
     "region": "West Yorkshire",
@@ -3356,8 +3328,8 @@
     "id": 481,
     "name": "Hafod y Llan",
     "region": "Gwynedd",
-    "lat": 53.0199,
-    "lng": -4.0886
+    "lat": 53.04159309984755,
+    "lng": -4.046500370331828
   },
   {
     "id": 482,
