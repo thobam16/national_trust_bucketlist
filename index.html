@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
@@ -17,130 +18,64 @@
 
     <style>
         :root {
-            /* Natural / Heritage Color Palette */
-            --nt-green: #006841;       /* Iconic Trust Green */
+            --nt-green: #006841;
             --nt-green-dark: #004d30;
-            --nt-cream: #f9f7f1;       /* Paper/Cream background */
+            --nt-cream: #f9f7f1;
             --nt-text: #2c2c2c;
-            --nt-oak: #8c735a;         /* Secondary earthy tone */
-            --nt-gold: #c6a95f;        /* Accent */
+            --nt-oak: #8c735a;
         }
 
         body { 
-            margin: 0; 
-            padding: 0; 
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            font-family: 'Lato', sans-serif;
-            background-color: var(--nt-cream);
-            color: var(--nt-text);
+            margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; 
+            font-family: 'Lato', sans-serif; background-color: var(--nt-cream); color: var(--nt-text);
         }
         
-        /* Typography overrides */
-        h1, h2, h3, h4, h5, .navbar-brand {
-            font-family: 'Merriweather', serif;
-        }
+        h1, h2, h3, h4, h5, .navbar-brand { font-family: 'Merriweather', serif; }
 
-        /* Navbar Styling */
         .navbar-custom {
             background-color: var(--nt-green);
             border-bottom: 4px solid var(--nt-oak);
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        .navbar-brand { font-weight: 700; letter-spacing: 0.5px; }
         
-        /* Layout */
-        #app-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden; 
-            position: relative;
-        }
+        #app-container { display: flex; flex: 1; overflow: hidden; position: relative; }
 
-        /* Sidebar Styling */
         #sidebar {
-            width: 400px;
-            background: #fff;
-            border-right: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-            z-index: 2;
+            width: 400px; background: #fff; border-right: 1px solid #ddd;
+            display: flex; flex-direction: column; z-index: 2;
             box-shadow: 2px 0 10px rgba(0,0,0,0.05);
         }
 
-        .sidebar-header {
-            padding: 20px;
-            background: var(--nt-cream);
-            border-bottom: 1px solid #e0e0e0;
-        }
+        .sidebar-header { padding: 20px; background: var(--nt-cream); border-bottom: 1px solid #e0e0e0; }
 
-        #property-list {
-            overflow-y: auto;
-            flex: 1;
-            padding: 10px;
-            background-color: #f4f4f4;
+        #property-list { overflow-y: auto; flex: 1; padding: 10px; background-color: #f4f4f4; }
+
+        /* Login Screen Styling */
+        #login-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; text-align: center; padding: 20px;
         }
 
         /* Property Card Styling */
         .property-card {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 10px;
-            transition: all 0.2s ease;
-            position: relative;
-            border-left: 4px solid transparent;
+            background: white; border: 1px solid #e0e0e0; border-radius: 6px;
+            padding: 15px; margin-bottom: 10px; transition: all 0.2s ease;
+            position: relative; border-left: 4px solid transparent;
         }
-
-        .property-card:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-            transform: translateY(-1px);
-        }
-
-        .property-card.visited {
-            border-left-color: var(--nt-green);
-            background-color: #f0f7f4;
-        }
+        .property-card:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
+        .property-card.visited { border-left-color: var(--nt-green); background-color: #f0f7f4; }
         
-        .property-card.visited .badge-visited {
-            display: inline-block;
-        }
-
         .badge-visited {
-            display: none;
-            font-size: 0.7em;
-            background: var(--nt-green);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 8px;
+            display: none; font-size: 0.7em; background: var(--nt-green);
+            color: white; padding: 2px 6px; border-radius: 4px; margin-left: 8px;
         }
+        .property-card.visited .badge-visited { display: inline-block; }
 
-        .btn-fly {
-            color: var(--nt-green);
-            border-color: var(--nt-green);
-        }
-        .btn-fly:hover {
-            background: var(--nt-green);
-            color: white;
-        }
+        .btn-fly { color: var(--nt-green); border-color: var(--nt-green); }
+        .btn-fly:hover { background: var(--nt-green); color: white; }
 
-        /* Map Styling */
-        #map {
-            flex: 1;
-            height: 100%;
-            z-index: 1;
-            background: #eaddcf; /* Fallback color */
-        }
+        #map { flex: 1; height: 100%; z-index: 1; background: #eaddcf; }
 
-        /* Scrollbar */
-        #property-list::-webkit-scrollbar { width: 8px; }
-        #property-list::-webkit-scrollbar-thumb { background: var(--nt-oak); border-radius: 4px; }
-        #property-list::-webkit-scrollbar-track { background: #eee; }
-
-        /* Responsive */
         @media (max-width: 768px) {
             #app-container { flex-direction: column-reverse; }
             #sidebar { width: 100%; height: 50%; }
@@ -153,20 +88,29 @@
     <nav class="navbar navbar-dark navbar-custom px-3">
         <div class="d-flex align-items-center w-100 justify-content-between">
             <span class="navbar-brand mb-0 h1"><i class="bi bi-tree-fill"></i> NT Bucket List</span>
-            <span class="badge bg-light text-dark fs-6" id="progress-text">Loading...</span>
+            <span class="badge bg-light text-dark fs-6" id="progress-text">Login Required</span>
         </div>
     </nav>
 
     <div id="app-container">
         <div id="sidebar">
-            <div class="sidebar-header">
+            <div class="sidebar-header" id="sidebar-controls" style="display:none;">
+                
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                    <div class="d-flex align-items-center">
+                        <img id="user-photo" src="" alt="User" style="width:32px; height:32px; border-radius:50%; margin-right:10px; display:none;">
+                        <span id="user-name" class="fw-bold small text-muted">User</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="window.doLogout()">Logout</button>
+                </div>
+
                 <h5 class="mb-3 text-muted">Explore & Filter</h5>
                 
                 <div class="input-group mb-2">
                     <label class="input-group-text bg-white" for="regionFilter">Region</label>
                     <select class="form-select" id="regionFilter">
                         <option value="all">All Regions</option>
-                        </select>
+                    </select>
                 </div>
 
                 <div class="form-check form-switch mt-2">
@@ -175,11 +119,21 @@
                 </div>
             </div>
 
-            <div id="property-list">
+            <div id="property-list" style="display:none;">
                 <div class="text-center mt-5">
                     <div class="spinner-border text-success" role="status"></div>
-                    <p class="text-muted mt-2">Fetching properties...</p>
+                    <p class="text-muted mt-2">Loading your list...</p>
                 </div>
+            </div>
+
+            <div id="login-screen">
+                <i class="bi bi-lock-fill text-muted" style="font-size: 3rem;"></i>
+                <h4 class="mt-3">Restricted Access</h4>
+                <p class="text-muted small mb-4">Please sign in to view and edit the bucket list.</p>
+                <button class="btn btn-success btn-lg shadow-sm" onclick="window.doLogin()">
+                    <i class="bi bi-google me-2"></i> Sign in with Google
+                </button>
+                <p id="auth-error" class="text-danger mt-3 small"></p>
             </div>
         </div>
 
@@ -192,11 +146,13 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
         // =======================================================
-        // 1. FIREBASE CONFIGURATION
+        // NO SECRETS IN CODE
+        // We rely on Firebase Security Rules to reject unauthorized emails.
         // =======================================================
+
         const firebaseConfig = {
           apiKey: "AIzaSyBArIEUkwy-ZUDUWEewBav5my0R_elvS-Q",
           authDomain: "national-trust-bucketlist.firebaseapp.com",
@@ -210,9 +166,10 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
         // =======================================================
-        // 2. STATE MANAGEMENT
+        // 1. STATE & ICONS
         // =======================================================
         let allProperties = [];
         let visitedMap = {};
@@ -220,138 +177,144 @@
         let map = null;
         let currentUser = null;
 
-        // Icons
         const iconBase = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/';
         const icons = {
-            visited: new L.Icon({
-                iconUrl: iconBase + 'marker-icon-2x-green.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-            }),
-            unvisited: new L.Icon({
-                iconUrl: iconBase + 'marker-icon-2x-grey.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-            })
+            visited: new L.Icon({ iconUrl: iconBase+'marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] }),
+            unvisited: new L.Icon({ iconUrl: iconBase+'marker-icon-2x-grey.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] })
         };
 
         // =======================================================
-        // 3. INITIALIZATION
+        // 2. INITIALIZATION
         // =======================================================
-        
-        // Load Data
         fetch('properties.json')
-            .then(res => {
-                if (!res.ok) throw new Error("HTTP error " + res.status);
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
-                // 1. Setup Data
                 allProperties = data.sort((a, b) => a.name.localeCompare(b.name));
-                
-                // 2. Initialize Map
                 initMap();
-                populateFilters();
-                
-                // 3. RENDER IMMEDIATELY (Don't wait for Auth)
-                renderApp(); 
-
-                // 4. Start Auth in background
-                initAuth();
             })
-            .catch(err => {
-                console.error("Failed to load JSON", err);
-                document.getElementById('property-list').innerHTML = `<p class="text-danger text-center mt-4">Error loading data: ${err.message}</p>`;
-            });
+            .catch(err => console.error("Failed to load JSON", err));
 
         function initMap() {
             map = L.map('map').setView([54.5, -3], 6); 
-
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-                subdomains: 'abcd',
-                maxZoom: 20
+                attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 20
             }).addTo(map);
 
-            markerClusterGroup = L.markerClusterGroup({
-                showCoverageOnHover: false,
-                maxClusterRadius: 50
-            });
+            markerClusterGroup = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 50 });
             map.addLayer(markerClusterGroup);
         }
 
-        function initAuth() {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    currentUser = user;
-                    console.log("User logged in:", user.uid);
-                    setupRealtimeListener(user.uid);
-                } else {
-                    console.log("Signing in anonymously...");
-                    signInAnonymously(auth).catch((error) => {
-                        console.error("Auth Failed:", error.code, error.message);
-                        alert("Database connection failed. Changes won't save. (Check console)");
-                    });
-                }
+        // =======================================================
+        // 3. AUTH LOGIC
+        // =======================================================
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Access Granted (initially) - The DB will check validity next
+                currentUser = user;
+                updateAuthUI(true, user);
+                setupRealtimeListener(user.uid);
+            } else {
+                currentUser = null;
+                updateAuthUI(false);
+                clearData();
+            }
+        });
+
+        window.doLogin = () => {
+            document.getElementById('auth-error').innerText = "";
+            signInWithPopup(auth, provider).catch(error => {
+                document.getElementById('auth-error').innerText = error.message;
             });
+        };
+
+        window.doLogout = () => {
+            signOut(auth);
+        };
+
+        function updateAuthUI(isLoggedIn, user = null) {
+            const loginScreen = document.getElementById('login-screen');
+            const sidebarControls = document.getElementById('sidebar-controls');
+            const list = document.getElementById('property-list');
+
+            if (isLoggedIn) {
+                loginScreen.style.display = 'none';
+                sidebarControls.style.display = 'block';
+                list.style.display = 'block';
+                
+                if(user.photoURL) {
+                    const img = document.getElementById('user-photo');
+                    img.src = user.photoURL;
+                    img.style.display = 'block';
+                }
+                document.getElementById('user-name').innerText = user.displayName || user.email;
+            } else {
+                loginScreen.style.display = 'flex';
+                sidebarControls.style.display = 'none';
+                list.style.display = 'none';
+                document.getElementById('progress-text').innerText = "Login Required";
+            }
+        }
+
+        function clearData() {
+            visitedMap = {};
+            markerClusterGroup.clearLayers();
+            document.getElementById('property-list').innerHTML = '';
         }
 
         // =======================================================
-        // 4. UI LOGIC
+        // 4. DATA SYNC (THE SECURITY CHECK IS HERE)
         // =======================================================
 
         function setupRealtimeListener(uid) {
-            // Listen for changes. If permission denied, log it.
             onSnapshot(doc(db, "users", uid), (docSnap) => {
                 visitedMap = docSnap.exists() ? (docSnap.data().visited || {}) : {};
-                // Re-render to show green ticks/markers
+                
+                if (document.getElementById('regionFilter').options.length <= 1) {
+                    populateFilters();
+                }
                 renderApp(); 
             }, (error) => {
-                console.error("Firestore Read Error:", error);
+                // === SECURITY CHECKPOINT ===
+                // This fires if Firebase Security Rules reject the user.
+                console.error("Database Access Denied:", error);
+                
                 if (error.code === 'permission-denied') {
-                    console.log("Check your Firestore Rules in Firebase Console.");
+                    document.getElementById('auth-error').innerText = "Access Denied: You are not authorized to view this data.";
+                    // Force logout
+                    signOut(auth);
                 }
             });
         }
+
+        // =======================================================
+        // 5. RENDER LOGIC
+        // =======================================================
 
         function populateFilters() {
             const regions = [...new Set(allProperties.map(p => p.region).filter(Boolean))].sort();
             const select = document.getElementById('regionFilter');
-            
-            regions.forEach(region => {
-                const opt = document.createElement('option');
-                opt.value = region;
-                opt.innerText = region;
-                select.appendChild(opt);
+            regions.forEach(r => {
+                const opt = document.createElement('option'); opt.value = r; opt.innerText = r; select.appendChild(opt);
             });
-
-            select.addEventListener('change', () => {
-                renderApp();
-                zoomToFiltered();
-            });
+            select.addEventListener('change', () => { renderApp(); zoomToFiltered(); });
             document.getElementById('showVisitedOnly').addEventListener('change', renderApp);
         }
 
-        function getFilteredData() {
+        function renderApp() {
             const regionVal = document.getElementById('regionFilter').value;
             const visitedOnly = document.getElementById('showVisitedOnly').checked;
 
-            return allProperties.filter(p => {
+            const filteredData = allProperties.filter(p => {
                 const matchesRegion = regionVal === 'all' || p.region === regionVal;
                 const matchesVisited = !visitedOnly || visitedMap[p.id];
                 return matchesRegion && matchesVisited;
             });
-        }
 
-        function renderApp() {
-            const filteredData = getFilteredData();
-            
-            // Stats
             const totalVisited = Object.values(visitedMap).filter(v => v).length;
-            const percentage = allProperties.length > 0 ? ((totalVisited / allProperties.length) * 100).toFixed(1) : 0;
+            const percentage = ((totalVisited / allProperties.length) * 100).toFixed(1);
             document.getElementById('progress-text').innerHTML = `${totalVisited} visited <small class="ms-1">(${percentage}%)</small>`;
 
-            // Render
             renderSidebarList(filteredData);
             renderMapMarkers(filteredData);
         }
@@ -359,96 +322,67 @@
         function renderSidebarList(data) {
             const container = document.getElementById('property-list');
             container.innerHTML = '';
-
+            
             if (data.length === 0) {
-                container.innerHTML = '<div class="text-center mt-5 text-muted">No properties found matching filters.</div>';
+                container.innerHTML = '<div class="text-center mt-5 text-muted">No results found.</div>';
                 return;
             }
 
             data.forEach(prop => {
                 const isVisited = !!visitedMap[prop.id];
                 const hasLoc = prop.lat && prop.lng;
-
-                const card = document.createElement('div');
-                card.className = `property-card ${isVisited ? 'visited' : ''}`;
-                card.innerHTML = `
+                const div = document.createElement('div');
+                div.className = `property-card ${isVisited?'visited':''}`;
+                div.innerHTML = `
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="cb-${prop.id}" ${isVisited ? 'checked' : ''}>
-                            <label class="form-check-label fw-bold text-dark" for="cb-${prop.id}" style="cursor:pointer">
-                                ${prop.name}
-                            </label>
+                            <input class="form-check-input" type="checkbox" id="cb-${prop.id}" ${isVisited?'checked':''}>
+                            <label class="form-check-label fw-bold text-dark" for="cb-${prop.id}" style="cursor:pointer">${prop.name}</label>
                             <span class="badge-visited">VISITED</span>
-                            <div class="text-muted small mt-1">${prop.region || 'Unknown Region'}</div>
+                            <div class="text-muted small mt-1">${prop.region||''}</div>
                         </div>
-                        
-                        ${hasLoc ? `
-                        <button class="btn btn-sm btn-outline-success btn-fly" onclick="window.flyToAndOpen(${prop.id}, ${prop.lat}, ${prop.lng})">
-                           <i class="bi bi-geo-alt-fill"></i> Map
-                        </button>` : '<span class="badge bg-secondary">No Loc</span>'}
+                        ${hasLoc ? `<button class="btn btn-sm btn-outline-success btn-fly" onclick="window.flyToAndOpen(${prop.id}, ${prop.lat}, ${prop.lng})"><i class="bi bi-geo-alt-fill"></i> Map</button>` : ''}
                     </div>
                 `;
-
-                card.querySelector('input').addEventListener('change', (e) => {
-                    toggleDatabaseVisit(prop.id, e.target.checked);
-                });
-
-                container.appendChild(card);
+                div.querySelector('input').addEventListener('change', (e) => toggleDatabaseVisit(prop.id, e.target.checked));
+                container.appendChild(div);
             });
         }
 
         function renderMapMarkers(data) {
             markerClusterGroup.clearLayers();
-
             data.forEach(prop => {
                 if (!prop.lat || !prop.lng) return;
-
                 const isVisited = !!visitedMap[prop.id];
-                const marker = L.marker([prop.lat, prop.lng], {
-                    icon: isVisited ? icons.visited : icons.unvisited
-                });
-
+                const marker = L.marker([prop.lat, prop.lng], { icon: isVisited ? icons.visited : icons.unvisited });
                 marker.featureId = prop.id;
-
-                const popupContent = `
-                    <div style="font-family: 'Merriweather', serif; min-width:150px;">
-                        <h6 style="color:var(--nt-green); font-weight:bold; margin-bottom:5px;">${prop.name}</h6>
-                        <p class="m-0 text-muted small">${prop.region}</p>
-                        <hr style="margin:8px 0;">
+                
+                const popupHTML = `
+                    <div style="font-family:'Merriweather',serif; min-width:150px;">
+                        <h6 style="color:var(--nt-green);font-weight:bold;">${prop.name}</h6>
+                        <p class="text-muted small">${prop.region}</p><hr>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="popup-cb-${prop.id}" 
-                                ${isVisited ? 'checked' : ''} 
-                                onchange="window.toggleDatabaseVisit(${prop.id}, this.checked)">
+                            <input class="form-check-input" type="checkbox" id="popup-cb-${prop.id}" ${isVisited?'checked':''} onchange="window.toggleDatabaseVisit(${prop.id}, this.checked)">
                             <label class="form-check-label" for="popup-cb-${prop.id}">Visited</label>
                         </div>
-                    </div>
-                `;
-
-                marker.bindPopup(popupContent);
+                    </div>`;
+                marker.bindPopup(popupHTML);
                 markerClusterGroup.addLayer(marker);
             });
         }
 
         function zoomToFiltered() {
             const bounds = markerClusterGroup.getBounds();
-            if (bounds.isValid()) {
-                map.fitBounds(bounds, { padding: [50, 50] });
-            }
+            if (bounds.isValid()) map.fitBounds(bounds, { padding: [50, 50] });
         }
-
-        // =======================================================
-        // 5. GLOBAL HELPERS
-        // =======================================================
 
         window.flyToAndOpen = (id, lat, lng) => {
             map.flyTo([lat, lng], 14);
             setTimeout(() => {
-                markerClusterGroup.eachLayer((layer) => {
-                    if (layer.featureId === id) {
-                        const visibleParent = markerClusterGroup.getVisibleParent(layer);
-                        if (visibleParent && visibleParent !== layer) {
-                            visibleParent.spiderfy();
-                        }
+                markerClusterGroup.eachLayer(layer => {
+                    if(layer.featureId === id) {
+                        const parent = markerClusterGroup.getVisibleParent(layer);
+                        if(parent && parent !== layer) parent.spiderfy();
                         layer.openPopup();
                     }
                 });
@@ -456,30 +390,20 @@
         };
 
         window.toggleDatabaseVisit = async (id, isChecked) => {
-            if (!currentUser) {
-                alert("You are not logged in. Enable 'Anonymous' auth in Firebase Console.");
-                return;
-            }
-            
-            // Optimistic UI update (update map immediately)
-            visitedMap[id] = isChecked; 
-            renderApp(); 
-
-            const userDocRef = doc(db, "users", currentUser.uid);
-            const updateData = {};
-            updateData[`visited.${id}`] = isChecked;
-            
+            if (!currentUser) return;
+            visitedMap[id] = isChecked; renderApp();
             try {
-                await setDoc(userDocRef, updateData, { merge: true });
+                await setDoc(doc(db, "users", currentUser.uid), { [`visited.${id}`]: isChecked }, { merge: true });
             } catch (err) {
-                console.error("DB Error", err);
-                alert("Could not save to database. Check console for permission errors.");
-                // Revert UI on error
-                visitedMap[id] = !isChecked;
-                renderApp();
+                console.error(err); 
+                // If it was a permission error, the listener above will handle it.
+                // If it was network/other, we just alert.
+                if (err.code !== 'permission-denied') {
+                    alert("Save failed (Network error)."); 
+                }
+                visitedMap[id] = !isChecked; renderApp();
             }
         };
-
     </script>
 </body>
 </html>
