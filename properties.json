@@ -3218,5 +3218,383 @@
     "region": "West Yorkshire",
     "lat": 53.65277777777778,
     "lng": -1.39
+  },
+  {
+    "id": 461,
+    "name": "Plas Newydd",
+    "region": "Anglesey",
+    "lat": 53.2026,
+    "lng": -4.21541
+  },
+  {
+    "id": 462,
+    "name": "Cemlyn and North Anglesey Coast",
+    "region": "Anglesey",
+    "lat": 53.412228,
+    "lng": -4.51752
+  },
+  {
+    "id": 463,
+    "name": "Swtan",
+    "region": "Anglesey",
+    "lat": 53.3710647,
+    "lng": -4.5548757
+  },
+  {
+    "id": 464,
+    "name": "Aberdeunant",
+    "region": "Carmarthenshire",
+    "lat": 51.9594,
+    "lng": -3.9334
+  },
+  {
+    "id": 465,
+    "name": "Dinefwr Park and Newton House",
+    "region": "Carmarthenshire",
+    "lat": 51.882099,
+    "lng": -4.01424
+  },
+  {
+    "id": 466,
+    "name": "Dolaucothi Gold Mines",
+    "region": "Carmarthenshire",
+    "lat": 52.0443,
+    "lng": -3.94824
+  },
+  {
+    "id": 467,
+    "name": "Dolaucothi Estate woodland",
+    "region": "Carmarthenshire",
+    "lat": 52.0443,
+    "lng": -3.94824
+  },
+  {
+    "id": 468,
+    "name": "Paxton's Tower",
+    "region": "Carmarthenshire",
+    "lat": 51.850824,
+    "lng": -4.1218203
+  },
+  {
+    "id": 469,
+    "name": "Llanerchaeron",
+    "region": "Ceredigion",
+    "lat": 52.218201,
+    "lng": -4.22546
+  },
+  {
+    "id": 470,
+    "name": "Mwnt",
+    "region": "Ceredigion",
+    "lat": 52.135648,
+    "lng": -4.6390951
+  },
+  {
+    "id": 471,
+    "name": "Penbryn",
+    "region": "Ceredigion",
+    "lat": 52.1438,
+    "lng": -4.49629
+  },
+  {
+    "id": 472,
+    "name": "Aberconwy House",
+    "region": "Conwy",
+    "lat": 53.2821,
+    "lng": -3.82732
+  },
+  {
+    "id": 473,
+    "name": "Bodnant Garden",
+    "region": "Conwy",
+    "lat": 53.2388,
+    "lng": -3.8689
+  },
+  {
+    "id": 474,
+    "name": "Bodysgallen Hall",
+    "region": "Conwy",
+    "lat": 53.2966,
+    "lng": -3.80279
+  },
+  {
+    "id": 475,
+    "name": "Conwy Suspension Bridge",
+    "region": "Conwy",
+    "lat": 53.281128,
+    "lng": -3.828009
+  },
+  {
+    "id": 476,
+    "name": "Tŷ Mawr Wybrnant",
+    "region": "Conwy",
+    "lat": 53.052502,
+    "lng": -3.83218
+  },
+  {
+    "id": 477,
+    "name": "Ysbyty Ifan",
+    "region": "Conwy",
+    "lat": 53.024175,
+    "lng": -3.7293937
+  },
+  {
+    "id": 478,
+    "name": "Carneddau and Glyderau",
+    "region": "Gwynedd",
+    "lat": 53.1236,
+    "lng": -4.0204
+  },
+  {
+    "id": 479,
+    "name": "Craflwyn and Beddgelert",
+    "region": "Gwynedd",
+    "lat": 53.0199,
+    "lng": -4.0886
+  },
+  {
+    "id": 480,
+    "name": "Dolmelynllyn Estate",
+    "region": "Gwynedd",
+    "lat": 52.8017,
+    "lng": -3.89006
+  },
+  {
+    "id": 481,
+    "name": "Hafod y Llan",
+    "region": "Gwynedd",
+    "lat": 53.0199,
+    "lng": -4.0886
+  },
+  {
+    "id": 482,
+    "name": "Llanbedrog Beach",
+    "region": "Gwynedd",
+    "lat": 52.8553,
+    "lng": -4.48187
+  },
+  {
+    "id": 483,
+    "name": "Ogwen Cottage",
+    "region": "Gwynedd",
+    "lat": 53.1233,
+    "lng": -4.01877
+  },
+  {
+    "id": 484,
+    "name": "Penrhyn Castle",
+    "region": "Gwynedd",
+    "lat": 53.2259,
+    "lng": -4.09526
+  },
+  {
+    "id": 485,
+    "name": "Plas yn Rhiw",
+    "region": "Gwynedd",
+    "lat": 52.8234,
+    "lng": -4.68544
+  },
+  {
+    "id": 486,
+    "name": "Porth Meudwy",
+    "region": "Gwynedd",
+    "lat": 52.8004,
+    "lng": -4.73193
+  },
+  {
+    "id": 487,
+    "name": "Porth y Swnt",
+    "region": "Gwynedd",
+    "lat": 52.8048,
+    "lng": -4.7117
+  },
+  {
+    "id": 488,
+    "name": "Porthdinllaen",
+    "region": "Gwynedd",
+    "lat": 52.9436,
+    "lng": -4.56877
+  },
+  {
+    "id": 489,
+    "name": "Porthor",
+    "region": "Gwynedd",
+    "lat": 52.8320,
+    "lng": -4.72328
+  },
+  {
+    "id": 490,
+    "name": "Segontium",
+    "region": "Gwynedd",
+    "lat": 53.13679,
+    "lng": -4.26526
+  },
+  {
+    "id": 491,
+    "name": "Clytha Park",
+    "region": "Monmouthshire",
+    "lat": 51.77178,
+    "lng": -2.92728
+  },
+  {
+    "id": 492,
+    "name": "The Kymin",
+    "region": "Monmouthshire",
+    "lat": 51.8091,
+    "lng": -2.6832
+  },
+  {
+    "id": 493,
+    "name": "Skenfrith Castle",
+    "region": "Monmouthshire",
+    "lat": 51.8778,
+    "lng": -2.7894
+  },
+  {
+    "id": 494,
+    "name": "Aberdulais Tin Works and Waterfall",
+    "region": "Neath Port Talbot",
+    "lat": 51.6807,
+    "lng": -3.77791
+  },
+  {
+    "id": 495,
+    "name": "Tredegar House",
+    "region": "Newport",
+    "lat": 51.5616,
+    "lng": -3.0281
+  },
+  {
+    "id": 496,
+    "name": "Cilgerran Castle",
+    "region": "Pembrokeshire",
+    "lat": 52.0574,
+    "lng": -4.63413
+  },
+  {
+    "id": 497,
+    "name": "Colby Woodland Garden",
+    "region": "Pembrokeshire",
+    "lat": 51.7420,
+    "lng": -4.6717
+  },
+  {
+    "id": 498,
+    "name": "Marloes Sands and Mere",
+    "region": "Pembrokeshire",
+    "lat": 51.7266,
+    "lng": -5.2188
+  },
+  {
+    "id": 499,
+    "name": "Martin's Haven",
+    "region": "Pembrokeshire",
+    "lat": 51.7346,
+    "lng": -5.24253
+  },
+  {
+    "id": 500,
+    "name": "Cleddau Woodlands",
+    "region": "Pembrokeshire",
+    "lat": 51.7192,
+    "lng": -4.8780
+  },
+  {
+    "id": 501,
+    "name": "Solva Coast",
+    "region": "Pembrokeshire",
+    "lat": 51.8740,
+    "lng": -5.18866
+  },
+  {
+    "id": 502,
+    "name": "Southwood Estate",
+    "region": "Pembrokeshire",
+    "lat": 51.848127,
+    "lng": -5.1088
+  },
+  {
+    "id": 503,
+    "name": "Stackpole",
+    "region": "Pembrokeshire",
+    "lat": 51.612813,
+    "lng": -4.926159
+  },
+  {
+    "id": 504,
+    "name": "St Davids Peninsula and Visitor Centre",
+    "region": "Pembrokeshire",
+    "lat": 51.8803,
+    "lng": -5.2629
+  },
+  {
+    "id": 505,
+    "name": "Tudor Merchant's House, Tenby",
+    "region": "Pembrokeshire",
+    "lat": 51.6713,
+    "lng": -4.6971
+  },
+  {
+    "id": 506,
+    "name": "Abergwesyn Common",
+    "region": "Powys",
+    "lat": 52.1606,
+    "lng": -3.6767
+  },
+  {
+    "id": 507,
+    "name": "Powis Castle & Garden",
+    "region": "Powys",
+    "lat": 52.6492,
+    "lng": -3.1576
+  },
+  {
+    "id": 508,
+    "name": "Brecon Beacons",
+    "region": "Powys",
+    "lat": 51.8691,
+    "lng": -3.4731
+  },
+  {
+    "id": 509,
+    "name": "Rhossili and south Gower coast",
+    "region": "Swansea",
+    "lat": 51.5685,
+    "lng": -4.2869
+  },
+  {
+    "id": 510,
+    "name": "Pennard, Pwll Du and Bishopston Valley",
+    "region": "Swansea",
+    "lat": 51.5669,
+    "lng": -4.0878
+  },
+  {
+    "id": 511,
+    "name": "Whiteford and North Gower",
+    "region": "Swansea",
+    "lat": 51.6300,
+    "lng": -4.2503
+  },
+  {
+    "id": 512,
+    "name": "Dyffryn Gardens",
+    "region": "Vale of Glamorgan",
+    "lat": 51.4376,
+    "lng": -3.3042
+  },
+  {
+    "id": 513,
+    "name": "Chirk Castle",
+    "region": "Wrexham",
+    "lat": 52.9359,
+    "lng": -3.0835
+  },
+  {
+    "id": 514,
+    "name": "Erddig",
+    "region": "Wrexham",
+    "lat": 53.0273,
+    "lng": -3.00296
   }
 ]
